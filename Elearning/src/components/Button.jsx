@@ -14,8 +14,8 @@ const Button = ({type,children,classname, onclick,varient,isload, ...rest}) => {
     
   )
   return (
-    <button type={type} className={buttonClasses} onClick={onclick} {...rest} >
-        <span className='flex justify-center items-center gap-2'>{children}
+    <button type={type} className={`${buttonClasses} ${isload && 'opacity-40'}` } onClick={onclick} {...rest}>
+        <span className={'flex justify-center items-center gap-2'}>{children}
          {isload && <span className='w-6 h-6 border-gray-500 border-4 border-t-blue-500 rounded-full animate-spin'></span>}
         </span>
         
