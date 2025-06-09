@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '../components/Button'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Login() {
     const [logindata,setLoginData]=useState({
@@ -35,7 +36,7 @@ console.log(logindata.role)
             
             <form className='w-full flex flex-col items-center gap-5 md:gap-8'>
                 <select name='role' value={logindata.role} onChange={logindataChangehandler} className='border border-gray-300 bg-gray-50 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]'>
-                    <option value="teacher">Teacher</option>
+                    <option value="teacher" >Teacher</option>
                     <option value="student">Student</option>
                     <option value="admin">Admin</option>
                 </select>
@@ -44,7 +45,7 @@ console.log(logindata.role)
                 <Button varient='ternary' classname='w-[50%] text-white font-bold cursor-pointer' type='submit' isload={isload} onclick={handleClick}>
                     Login
                 </Button>
-                <p className='text-sm text-gray-900'>Dont have an account ? <a href="" className='text-blue-600 cursor-pointer'>SignUp</a></p>
+                <p className='text-sm text-gray-900'>Dont have an account ? <Link to='/signup' className='text-blue-600 cursor-pointer'>SignUp</Link></p>
             </form>
 
         </div>

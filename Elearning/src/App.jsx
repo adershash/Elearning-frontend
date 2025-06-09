@@ -5,6 +5,7 @@ import './App.css'
 import Button from './components/Button'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import { Routes,Route } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(false)
@@ -17,7 +18,10 @@ function App() {
 
   return (
     <>
-    <Login/>
+    <Routes>
+    <Route path='/login' element={<Login/>}/>
+    <Route path='/signup' element={<Signup/>}/>
+    </Routes>
        
 
     </>
