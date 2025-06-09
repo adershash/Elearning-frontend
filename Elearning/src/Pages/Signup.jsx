@@ -9,6 +9,7 @@ function Signup() {
         password:'',
         confirmpassword:'',
         email:'',
+        role:''
     })
     const [isload,setisLoad]=useState(false)
     const signupdataChangehandler=(e)=>{
@@ -20,10 +21,12 @@ function Signup() {
 
     }
     
-    const handleClick=()=>{
+    const handleClick=(e)=>{
+        e.preventDefault()
         console.log('hello')
         setisLoad(!isload)
     }
+    console.log(signupdata.role)
 
 
   return (
@@ -35,7 +38,11 @@ function Signup() {
             </div>
             
             <form className='w-full flex flex-col items-center gap-5 md:gap-8'>
-                
+                <select name='role' value={signupdata.role} onChange={signupdataChangehandler} className='border border-gray-300 bg-gray-50 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]'>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                    <option value="admin">Admin</option>
+                </select>
                 <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Username' name='username' onChange={signupdataChangehandler} value={signupdata.username} required/>
                 <input type="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Password' name='password' onChange={signupdataChangehandler} value={signupdata.password} required/>
                 <input type="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='confirm password' name='confirmpassword' onChange={signupdataChangehandler} value={signupdata.confirmpassword} required/>
