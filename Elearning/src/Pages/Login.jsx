@@ -2,12 +2,13 @@ import React from 'react'
 import Button from '../components/Button'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import api from '../API/config'
 
 function Login() {
     const [logindata,setLoginData]=useState({
         username:'',
         password:'',
-        role:''
+        role:'teacher'
     })
     const [isload,setisLoad]=useState(false)
     const logindataChangehandler=(e)=>{
@@ -20,11 +21,26 @@ function Login() {
     }
     
     const handleClick=(e)=>{
+        setisLoad(true)
         e.preventDefault()
-        console.log('hello')
-        setisLoad(!isload)
+       api.post('api/token/',
+        logindata, {
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then((res)=>{
+            console.log(res.data.access)
+            localStorage.setItem('access_token',res.data.access)
+            localStorage.setItem('refresh_token',res.data.refresh)
+            console.log('logged in')
+            setisLoad(false)
+        }).then((res)=>{
+            api.get('api/role-info/').then((res)=>console.log(res.data.data.user.email))
+        })
+        
+        
     }
-console.log(logindata.role)
+
 
   return (
     <div className='max-w-full h-full flex justify-center items-center bg-slate-200'>

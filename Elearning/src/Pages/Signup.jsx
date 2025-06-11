@@ -2,7 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import Button from '../components/Button'
 import { Link } from 'react-router-dom'
-
+import api from '../API/config'
+import { useNavigate } from 'react-router-dom'
 function Signup() {
   
      const [signupdata,setSignupData]=useState({
@@ -10,8 +11,9 @@ function Signup() {
         password:'',
         confirmpassword:'',
         email:'',
-        role:''
+        role:'teacher'
     })
+    const navigate=useNavigate()
     const [isload,setisLoad]=useState(false)
     const signupdataChangehandler=(e)=>{
         const {name,value}=e.target
@@ -24,10 +26,22 @@ function Signup() {
     
     const handleClick=(e)=>{
         e.preventDefault()
+        setisLoad(true)
+        api.post('api/register/',
+        signupdata, {
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then((res)=>{
+            setisLoad(false)
+            console.log(res.status)
+            navigate('/login')
+            
+        })
         console.log('hello')
-        setisLoad(!isload)
+        
     }
-    console.log(signupdata.role)
+    
 
 
   return (
