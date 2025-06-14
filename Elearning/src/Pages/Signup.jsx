@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState } from 'react'
-import Button from '../components/Button'
+import Button from '../components/Button/Button'
 import { Link } from 'react-router-dom'
 import api from '../API/config'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../API/AuthProvider'
 function Signup() {
   
      const [signupdata,setSignupData]=useState({
@@ -13,6 +14,7 @@ function Signup() {
         email:'',
         role:'teacher'
     })
+    const{user,login,signup}=useAuth()
     const navigate=useNavigate()
     const [isload,setisLoad]=useState(false)
     const signupdataChangehandler=(e)=>{
@@ -24,21 +26,12 @@ function Signup() {
 
     }
     
-    const handleClick=(e)=>{
+    const handleClick=async(e)=>{
         e.preventDefault()
         setisLoad(true)
-        api.post('api/register/',
-        signupdata, {
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }).then((res)=>{
-            setisLoad(false)
-            console.log(res.status)
-            navigate('/login')
-            
-        })
-        console.log('hello')
+        await signup(signupdata)
+        setisLoad(false)
+        navigate('/login')
         
     }
     
@@ -58,7 +51,7 @@ function Signup() {
                     <option value="student">Student</option>
                     <option value="admin">Admin</option>
                 </select>
-                <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Username' name='username' onChange={signupdataChangehandler} value={signupdata.username} required/>
+                <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Username' name='username' onChange={signupdataChangehandler} value={signupdata.username} required />
                 <input type="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Password' name='password' onChange={signupdataChangehandler} value={signupdata.password} required/>
                 <input type="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='confirm password' name='confirmpassword' onChange={signupdataChangehandler} value={signupdata.confirmpassword} required/>
                 <input type="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='email' name='email' onChange={signupdataChangehandler} value={signupdata.email} required/>

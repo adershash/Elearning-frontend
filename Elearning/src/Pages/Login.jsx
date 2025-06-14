@@ -1,15 +1,17 @@
 import React from 'react'
-import Button from '../components/Button'
+import Button from '../components/Button/Button'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../API/config'
+import { useAuth } from '../API/AuthProvider'
 
 function Login() {
     const [logindata,setLoginData]=useState({
         username:'',
         password:'',
-        role:'teacher'
+        
     })
+    const {user,login,signup,getUser}=useAuth()
     const [isload,setisLoad]=useState(false)
     const logindataChangehandler=(e)=>{
         const {name,value}=e.target
@@ -20,23 +22,14 @@ function Login() {
 
     }
     
-    const handleClick=(e)=>{
+    const handleClick=async(e)=>{
         setisLoad(true)
         e.preventDefault()
-       api.post('api/token/',
-        logindata, {
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }).then((res)=>{
-            console.log(res.data.access)
-            localStorage.setItem('access_token',res.data.access)
-            localStorage.setItem('refresh_token',res.data.refresh)
-            console.log('logged in')
-            setisLoad(false)
-        }).then((res)=>{
-            api.get('api/role-info/').then((res)=>console.log(res.data.data.user.email))
-        })
+        await login(logindata)
+        await getUser()
+        console.log(user)
+        setisLoad(false)
+      
         
         
     }
@@ -48,14 +41,11 @@ function Login() {
             <div >
                 <h2 className='text-blue-500 font-bold text-2xl md:text-3xl'>Login</h2>
                 
+                
             </div>
             
             <form className='w-full flex flex-col items-center gap-5 md:gap-8'>
-                <select name='role' value={logindata.role} onChange={logindataChangehandler} className='border border-gray-300 bg-gray-50 text-gray-900 text-sm rounded-lg  focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]'>
-                    <option value="teacher" >Teacher</option>
-                    <option value="student">Student</option>
-                    <option value="admin">Admin</option>
-                </select>
+                
                 <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Username' name='username' onChange={logindataChangehandler} value={logindata.username}/>
                 <input type="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-blue-500 block w-full p-2.5 md:w-[80%]" placeholder='Password' name='password' onChange={logindataChangehandler} value={logindata.password}/>
                 <Button varient='ternary' classname='w-[50%] text-white font-bold cursor-pointer' type='submit' isload={isload} onclick={handleClick}>
